@@ -2,7 +2,9 @@ package br.com.wanderlei.controller;
 
 import br.com.wanderlei.environment.InstanceInformationService;
 import br.com.wanderlei.model.Exchange;
+import br.com.wanderlei.repository.ExchangeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,9 @@ public class ExchangeController {
 
     @Autowired
     InstanceInformationService informationService;
+    
+    @Autowired
+    ExchangeRepository repository;
 
     //http://localhost:8000/echange/5/USD/BRL
     @GetMapping(value="/{amount}/{from}/{to}", produces = MediaType.APPLICATION_JSON_VALUE )
@@ -25,8 +30,16 @@ public class ExchangeController {
             @PathVariable("from") String from,
             @PathVariable("to") String to){
 
-        return new Exchange ( 1L, from, to, BigDecimal.ONE, BigDecimal.ONE,
-                "PORT " + informationService.retrieverServerPort ());
+        Exchange exchange = repository.findByFromAndTo (from, to);
+        if (exchange == null) throw new RuntimeException("Currency unsuported");
+
+        BigDecimal conversionFactor = exchange.getConversionFactor ();
+        BigDecimal convertedValue = conversionFactor.multiply (amount);
+        exchange.setConvertedValue(convertedValue);
+
+        exchange.setEnvironment ("PORT " + informationService.retrieverServerPort ());
+        
+        return exchange;
     }
 
 }
