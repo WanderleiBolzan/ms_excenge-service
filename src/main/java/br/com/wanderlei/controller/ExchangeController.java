@@ -38,7 +38,7 @@ public class ExchangeController {
         exchange.setConvertedValue(convertedValue);
 
         exchange.setEnvironment ("PORT " + informationService.retrieverServerPort ());
-        
+
         return exchange;
     }
 
