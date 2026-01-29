@@ -3,6 +3,8 @@ package br.com.wanderlei.controller;
 import br.com.wanderlei.environment.InstanceInformationService;
 import br.com.wanderlei.model.Exchange;
 import br.com.wanderlei.repository.ExchangeRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 
+@Tag (name="Exchange Endpoint")
 @RestController
 @RequestMapping("exchange-service")
 public class ExchangeController {
@@ -24,6 +27,7 @@ public class ExchangeController {
     ExchangeRepository repository;
 
     //http://localhost:8000/echange/5/USD/BRL
+    @Operation(summary = "Get an Exchange form amount of currency")
     @GetMapping(value="/{amount}/{from}/{to}", produces = MediaType.APPLICATION_JSON_VALUE )
     public Exchange getEchange(
             @PathVariable("amount") BigDecimal amount,

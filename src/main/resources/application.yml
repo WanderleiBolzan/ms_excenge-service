@@ -1,17 +1,21 @@
 server:
   port: 8000
+
 spring:
   application:
     name: exchange-service
   datasource:
-    drive-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/exchange_service
     username: wjb
-    password: Nazlob4991@
+    password: "Nazlob4991@"
   jpa:
     hibernate:
       ddl-auto: none
-    properties:
-      hibernate:
     show-sql: false
     open-in-view: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
