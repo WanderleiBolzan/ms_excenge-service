@@ -20,6 +20,10 @@ spring:
       hibernate:
     show-sql: false
     open-in-view: false
+  management:
+    tracing:
+      sampling:
+        probability: 1.0
 
 springdoc:
   api-docs:
